@@ -1,7 +1,11 @@
 [project]
 name = "subverted"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Subversion management tool."
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "humanize>=4.11.0",
+    "rich>=13.9.4",
+    "svn>=1.0.1",
+]
