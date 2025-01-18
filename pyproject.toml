@@ -9,3 +9,10 @@ dependencies = [
     "pyfiglet>=1.0.2",
     "rich>=13.9.4",
 ]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.6.10",
+    "pytest>=8.3.4",
+    "pytest-mock>=3.14.0",
+]

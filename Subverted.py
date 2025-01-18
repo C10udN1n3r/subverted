@@ -1,3 +1,7 @@
+from rich.columns import Columns
+from rich import print
+import sys
+import os
 import logging
 from pathlib import Path
 from rich.traceback import install
@@ -12,14 +16,13 @@ log.setLevel(logging.ERROR)
 install(show_locals=True)
 
 home_dir = Path.home()
-working_dir = Path("/home/cloud/python/Test")
+working_dir = Path("/home/cloud/svn_test/Test")
 
 svn = SubversionConnector(working_dir)
 
 display_header(svn)
 display_info(svn)
-display_logs(svn)
-
+# display_logs(svn)
 
 # Print out the "branches" for the repo
 # svn = SubversionConnector(working_dir)
