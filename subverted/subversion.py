@@ -48,7 +48,8 @@ class SubversionConnector:
                 log.debug(f'Command result: "{result}"')
             return result.stdout.strip()
         except subprocess.CalledProcessError as err:
-            raise RuntimeError(f"Subversion command failed: {err.stderr.strip()}")
+            raise RuntimeError(
+                f"Subversion command failed: {err.stderr.strip()}")
 
     def status(self) -> str:
         """Get the status of the repo
@@ -77,8 +78,18 @@ class SubversionConnector:
         """
         return self._run_command(["update"])
 
-    def add(self):
-        raise NotImplementedError
+    def add(self, file_path: Path) -> str:
+        """Add a file or directory to version control.
+
+        Args:
+            file_path (Path): Path to the file or directory to add.
+
+        Returns:
+            str: The output of the "add" command.
+        """
+        if not file_path.exists():
+            raise ValueError(f"File or directory does not exist: {file_path}")
+        return self._run_command(["add", str(file_path)])
 
     def commit(self, message: str) -> str:
         """Commits the currently staged files with the given message.
@@ -107,11 +118,31 @@ class SubversionConnector:
         # TODO: Implement sylizing the text (might be done in a different file.)
         return self._run_command(["info"])
 
-    def list_branches(self, branch_url) -> str:
-        raise NotImplementedError
+    def list_branches(self, branch_url: str) -> list[str]:
+        """List branches in the repository.
+
+        Args:
+            branch_url (str): URL of the branches directory in the repository.
+
+        Returns:
+            list[str]: A list of branch names.
+        """
+        output = self._run_command(["list", branch_url])
+        return output.splitlines()
 
     def diff(self, file_path: Path = None) -> str:
-        raise NotImplementedError
+        """Show changes between the working copy and the repository.
+
+        Args:
+            file_path (Path, optional): Path to a specific file. Defaults to None.
+
+        Returns:
+            str: The output of the "diff" command.
+        """
+        command = ["diff"]
+        if file_path:
+            command.append(str(file_path))
+        return self._run_command(command)
 
     def blame(self):
         raise NotImplementedError
